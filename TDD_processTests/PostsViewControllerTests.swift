@@ -38,7 +38,7 @@ class PostsLoader {
     }
 }
 
-class PostsViewController: UIViewController {
+class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
 
     init(postsLoader: PostsLoader) {
@@ -52,6 +52,12 @@ class PostsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refresh()
+    }
+    
+    @objc func refresh() {
         postsLoader.load()
     }
 }
@@ -71,5 +77,20 @@ class PostsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(postsLoader.loadCallCount, 1)
+    }
+    
+    func test_onPullToRefresg_requestPostsLoad() {
+        let postsLoader = PostsLoader()
+        let sut = PostsViewController(postsLoader: postsLoader)
+        
+        sut.loadViewIfNeeded()
+        sut.refreshControl?.allTargets.forEach { target in
+            sut.refreshControl?.actions(forTarget: target,
+                                        forControlEvent: .valueChanged)?.forEach {
+                                            (target as NSObject).perform(Selector($0))
+            }
+        }
+        
+        XCTAssertEqual(postsLoader.loadCallCount, 2)
     }
 }
