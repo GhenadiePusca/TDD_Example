@@ -30,4 +30,23 @@ import XCTest
     - On retry the image is loaded again.
  */
 
-class PostsViewControllerTests: XCTestCase { }
+class PostsLoader {
+    private(set) var loadCallCount = 0
+}
+
+class PostsViewController {
+    private let postsLoader: PostsLoader
+
+    init(postsLoader: PostsLoader) {
+        self.postsLoader = postsLoader        
+    }
+}
+
+class PostsViewControllerTests: XCTestCase { 
+    func test_init_doesNotRequestLoad() {
+        let postsLoader = PostsLoader()
+        let sut = PostsViewController(postsLoader: postsLoader)
+        
+        XCTAssertEqual(postsLoader.loadCallCount, 0)
+    }
+}
