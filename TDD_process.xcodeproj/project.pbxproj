@@ -13,6 +13,8 @@
 		C411A24B23E45CFB00D637BC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C411A24A23E45CFB00D637BC /* Preview Assets.xcassets */; };
 		C411A24E23E45CFB00D637BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C411A24C23E45CFB00D637BC /* LaunchScreen.storyboard */; };
 		C411A27223E45D9D00D637BC /* PostsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27123E45D9D00D637BC /* PostsViewControllerTests.swift */; };
+		C411A27A23E4644300D637BC /* MemoryLeaksTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */; };
+		C411A27C23E4646E00D637BC /* UIControll+EventSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		C411A25423E45CFB00D637BC /* TDD_processTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TDD_processTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C411A25A23E45CFB00D637BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C411A27123E45D9D00D637BC /* PostsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewControllerTests.swift; sourceTree = "<group>"; };
+		C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryLeaksTracking.swift; sourceTree = "<group>"; };
+		C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControll+EventSimulation.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,10 +102,20 @@
 		C411A25723E45CFB00D637BC /* TDD_processTests */ = {
 			isa = PBXGroup;
 			children = (
-				C411A25A23E45CFB00D637BC /* Info.plist */,
 				C411A27123E45D9D00D637BC /* PostsViewControllerTests.swift */,
+				C411A27823E4643200D637BC /* Helpers */,
+				C411A25A23E45CFB00D637BC /* Info.plist */,
 			);
 			path = TDD_processTests;
+			sourceTree = "<group>";
+		};
+		C411A27823E4643200D637BC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */,
+				C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +229,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C411A27C23E4646E00D637BC /* UIControll+EventSimulation.swift in Sources */,
+				C411A27A23E4644300D637BC /* MemoryLeaksTracking.swift in Sources */,
 				C411A27223E45D9D00D637BC /* PostsViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

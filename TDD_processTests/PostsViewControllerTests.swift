@@ -105,14 +105,6 @@ class PostsViewControllerTests: XCTestCase {
     }
 }
 
-extension XCTestCase {
-    func trackForMemoryLeaks(object: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak object] in
-            XCTAssertNil(object, "Expected sut to be deallocated", file: file, line: line)
-        }
-    }
-}
-
 extension PostsViewController { 
     var isShowingLoadingSpinner: Bool? {
         refreshControl?.isRefreshing
@@ -120,20 +112,5 @@ extension PostsViewController {
 
     func simulateReload() {
         refreshControl?.simulateValueChange()
-    }
-}
-
-extension UIControl {
-    func simulateValueChange() {
-        simulateEvent(event: .valueChanged)
-    }
-
-    func simulateEvent(event: Event) {
-        allTargets.forEach { target in
-            actions(forTarget: target,
-                    forControlEvent: event)?.forEach {
-                        (target as NSObject).perform(Selector($0))
-            }
-        }
     }
 }
