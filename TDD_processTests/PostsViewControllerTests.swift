@@ -54,6 +54,7 @@ class PostsViewController: UITableViewController {
         super.viewDidLoad()
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl?.beginRefreshing()
         refresh()
     }
     
@@ -75,9 +76,22 @@ class PostsViewControllerTests: XCTestCase {
         sut.simulateReload()
         XCTAssertEqual(postsLoader.loadCallCount, 2)
     }
+    
+    func test_loadingActions_showsLoadingIndicator() {
+        let postsLoader = PostsLoader()
+
+        let sut = PostsViewController(postsLoader: postsLoader)
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.isShowingLoadingSpinner, true)
+    }
 }
 
 extension PostsViewController { 
+    var isShowingLoadingSpinner: Bool? {
+        refreshControl?.isRefreshing
+    }
+
     func simulateReload() {
         refreshControl?.simulateValueChange()
     }
