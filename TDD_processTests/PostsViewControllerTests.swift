@@ -66,8 +66,8 @@ class PostsViewController: UITableViewController {
     }
     
     @objc func refresh() {
-        postsLoader.load(completion: { _ in
-            self.refreshControl?.endRefreshing()
+        postsLoader.load(completion: { [weak self] _ in
+            self?.refreshControl?.endRefreshing()
         })
     }
 }
@@ -77,6 +77,7 @@ class PostsViewControllerTests: XCTestCase {
         let postsLoader = PostsLoader()
 
         let sut = PostsViewController(postsLoader: postsLoader)
+        trackForMemoryLeaks(object: sut)
         XCTAssertEqual(postsLoader.loadCallCount, 0)
 
         sut.loadViewIfNeeded()
@@ -90,12 +91,21 @@ class PostsViewControllerTests: XCTestCase {
         let postsLoader = PostsLoader()
 
         let sut = PostsViewController(postsLoader: postsLoader)
+        trackForMemoryLeaks(object: sut)
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(sut.isShowingLoadingSpinner, true)
         
         postsLoader.completeLoadingWithSuccess()
         XCTAssertEqual(sut.isShowingLoadingSpinner, false)
+    }
+}
+
+extension XCTestCase {
+    func trackForMemoryLeaks(object: AnyObject) {
+        addTeardownBlock { [weak object] in
+            XCTAssertNil(object, "Expected sut to be deallocated")
+        }
     }
 }
 
