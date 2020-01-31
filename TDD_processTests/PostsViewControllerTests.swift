@@ -63,27 +63,15 @@ class PostsViewController: UITableViewController {
 }
 
 class PostsViewControllerTests: XCTestCase { 
-    func test_init_doesNotRequestLoad() {
+    func test_loadRequestActions_requestsLoad() {
         let postsLoader = PostsLoader()
-        let _ = PostsViewController(postsLoader: postsLoader)
-        
-        XCTAssertEqual(postsLoader.loadCallCount, 0)
-    }
-    
-    func test_viewLoaded_requestPostsLoad() {
-        let postsLoader = PostsLoader()
-        let sut = PostsViewController(postsLoader: postsLoader)
-        
-        sut.loadViewIfNeeded()
 
-        XCTAssertEqual(postsLoader.loadCallCount, 1)
-    }
-    
-    func test_onReload_requestPostsLoad() {
-        let postsLoader = PostsLoader()
         let sut = PostsViewController(postsLoader: postsLoader)
-        
+        XCTAssertEqual(postsLoader.loadCallCount, 0)
+
         sut.loadViewIfNeeded()
+        XCTAssertEqual(postsLoader.loadCallCount, 1)
+
         sut.simulateReload()
         XCTAssertEqual(postsLoader.loadCallCount, 2)
     }
