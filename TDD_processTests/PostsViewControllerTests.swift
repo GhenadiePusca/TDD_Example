@@ -102,9 +102,9 @@ class PostsViewControllerTests: XCTestCase {
 }
 
 extension XCTestCase {
-    func trackForMemoryLeaks(object: AnyObject) {
+    func trackForMemoryLeaks(object: AnyObject, file: StaticString = #file, line: UInt = #line) {
         addTeardownBlock { [weak object] in
-            XCTAssertNil(object, "Expected sut to be deallocated")
+            XCTAssertNil(object, "Expected sut to be deallocated", file: file, line: line)
         }
     }
 }
