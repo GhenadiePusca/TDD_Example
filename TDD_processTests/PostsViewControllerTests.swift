@@ -79,18 +79,33 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(postsLoader.loadCallCount, 1)
     }
     
-    func test_onPullToRefresg_requestPostsLoad() {
+    func test_onReload_requestPostsLoad() {
         let postsLoader = PostsLoader()
         let sut = PostsViewController(postsLoader: postsLoader)
         
         sut.loadViewIfNeeded()
-        sut.refreshControl?.allTargets.forEach { target in
-            sut.refreshControl?.actions(forTarget: target,
-                                        forControlEvent: .valueChanged)?.forEach {
-                                            (target as NSObject).perform(Selector($0))
+        sut.simulateReload()
+        XCTAssertEqual(postsLoader.loadCallCount, 2)
+    }
+}
+
+extension PostsViewController { 
+    func simulateReload() {
+        refreshControl?.simulateValueChange()
+    }
+}
+
+extension UIControl {
+    func simulateValueChange() {
+        simulateEvent(event: .valueChanged)
+    }
+
+    func simulateEvent(event: Event) {
+        allTargets.forEach { target in
+            actions(forTarget: target,
+                    forControlEvent: event)?.forEach {
+                        (target as NSObject).perform(Selector($0))
             }
         }
-        
-        XCTAssertEqual(postsLoader.loadCallCount, 2)
     }
 }
