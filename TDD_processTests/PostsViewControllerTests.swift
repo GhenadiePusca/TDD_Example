@@ -32,21 +32,44 @@ import XCTest
 
 class PostsLoader {
     private(set) var loadCallCount = 0
+    
+    func load() {
+        loadCallCount += 1
+    }
 }
 
-class PostsViewController {
+class PostsViewController: UIViewController {
     private let postsLoader: PostsLoader
 
     init(postsLoader: PostsLoader) {
-        self.postsLoader = postsLoader        
+        self.postsLoader = postsLoader  
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        postsLoader.load()
     }
 }
 
 class PostsViewControllerTests: XCTestCase { 
     func test_init_doesNotRequestLoad() {
         let postsLoader = PostsLoader()
-        let sut = PostsViewController(postsLoader: postsLoader)
+        let _ = PostsViewController(postsLoader: postsLoader)
         
         XCTAssertEqual(postsLoader.loadCallCount, 0)
+    }
+    
+    func test_viewLoaded_requestPostsLoad() {
+        let postsLoader = PostsLoader()
+        let sut = PostsViewController(postsLoader: postsLoader)
+        
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(postsLoader.loadCallCount, 1)
     }
 }
