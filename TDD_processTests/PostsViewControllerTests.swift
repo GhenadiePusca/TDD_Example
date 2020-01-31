@@ -33,8 +33,15 @@ import XCTest
 class PostsLoader {
     private(set) var loadCallCount = 0
     
-    func load() {
+    private var completion: ((Result<Void, Error>) -> Void)?
+
+    func load(completion: @escaping (Result<Void, Error>) -> Void) {
         loadCallCount += 1
+        self.completion = completion
+    }
+    
+    func completeLoadingWithSuccess() {
+        completion?(.success(()))
     }
 }
 
@@ -59,7 +66,9 @@ class PostsViewController: UITableViewController {
     }
     
     @objc func refresh() {
-        postsLoader.load()
+        postsLoader.load(completion: { _ in
+            self.refreshControl?.endRefreshing()
+        })
     }
 }
 
@@ -84,6 +93,9 @@ class PostsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(sut.isShowingLoadingSpinner, true)
+        
+        postsLoader.completeLoadingWithSuccess()
+        XCTAssertEqual(sut.isShowingLoadingSpinner, false)
     }
 }
 
