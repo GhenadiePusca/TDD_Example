@@ -74,10 +74,7 @@ class PostsViewController: UITableViewController {
 
 class PostsViewControllerTests: XCTestCase { 
     func test_loadRequestActions_requestsLoad() {
-        let postsLoader = PostsLoader()
-
-        let sut = PostsViewController(postsLoader: postsLoader)
-        trackForMemoryLeaks(object: sut)
+        let (sut, postsLoader) = makeSut()
         XCTAssertEqual(postsLoader.loadCallCount, 0)
 
         sut.loadViewIfNeeded()
@@ -88,16 +85,23 @@ class PostsViewControllerTests: XCTestCase {
     }
     
     func test_loadingActions_showsLoadingIndicator() {
-        let postsLoader = PostsLoader()
-
-        let sut = PostsViewController(postsLoader: postsLoader)
-        trackForMemoryLeaks(object: sut)
+        let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(sut.isShowingLoadingSpinner, true)
         
         postsLoader.completeLoadingWithSuccess()
         XCTAssertEqual(sut.isShowingLoadingSpinner, false)
+    }
+    
+    // MARK: - Helper methods
+
+    private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoader) {
+        let postsLoader = PostsLoader()
+        let sut = PostsViewController(postsLoader: postsLoader)
+        trackForMemoryLeaks(object: sut, file: file, line: line)
+        
+        return (sut, postsLoader)
     }
 }
 
