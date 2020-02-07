@@ -30,18 +30,27 @@ import XCTest
     - On retry the image is loaded again.
  */
 
-class PostsLoader {
-    private(set) var loadCallCount = 0
-    
-    private var completion: ((Result<Void, Error>) -> Void)?
+func anyError() -> Error {
+    NSError(domain: "Test", code: 1)
+}
 
-    func load(completion: @escaping (Result<Void, Error>) -> Void) {
-        loadCallCount += 1
-        self.completion = completion
+class PostsLoader {
+    var loadCallCount: Int {
+        completions.count
     }
     
-    func completeLoadingWithSuccess() {
-        completion?(.success(()))
+    private var completions = [((Result<Void, Error>) -> Void)]()
+
+    func load(completion: @escaping (Result<Void, Error>) -> Void) {
+        completions.append(completion)
+    }
+    
+    func completeLoadingWithSuccess(at idx: Int = 0) {
+        completions[idx](.success(()))
+    }
+
+    func completeLoadingWithError(at idx: Int = 0) {
+        completions[idx](.failure(anyError()))
     }
 }
 
@@ -90,11 +99,14 @@ class PostsViewControllerTests: XCTestCase {
         
         XCTAssertEqual(sut.isShowingLoadingSpinner, true)
         
-        postsLoader.completeLoadingWithSuccess()
+        postsLoader.completeLoadingWithSuccess(at: 0)
         XCTAssertEqual(sut.isShowingLoadingSpinner, false)
 
         sut.simulateReload()
         XCTAssertEqual(sut.isShowingLoadingSpinner, true)
+
+        postsLoader.completeLoadingWithError(at: 1)
+        XCTAssertEqual(sut.isShowingLoadingSpinner, false)
     }
     
     // MARK: - Helper methods
