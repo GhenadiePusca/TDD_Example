@@ -108,6 +108,14 @@ class PostsViewControllerTests: XCTestCase {
         postsLoader.completeLoadingWithError(at: 1)
         XCTAssertEqual(sut.isShowingLoadingSpinner, false)
     }
+
+    func test_loadCompleted_rendersLoadedPosts() {
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(sut.numberOfRenderedPosts, 0)
+        
+    }
     
     // MARK: - Helper methods
 
@@ -120,12 +128,18 @@ class PostsViewControllerTests: XCTestCase {
     }
 }
 
-extension PostsViewController { 
+extension PostsViewController {
+    private var postsSection: Int { 0 }
+
     var isShowingLoadingSpinner: Bool? {
         refreshControl?.isRefreshing
     }
 
     func simulateReload() {
         refreshControl?.simulateValueChange()
+    }
+
+    var numberOfRenderedPosts: Int {
+        tableView.numberOfRows(inSection: postsSection)
     }
 }
