@@ -132,10 +132,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_loadCompleted_rendersLoadedPosts() {
-        let post = Post(image: URL(string: "https://any.com")!,
-                        description: "Post 1 description")
-        let post2 = Post(image: URL(string: "https://any2.com")!,
-                         description: "Post 2 description")
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -187,6 +185,11 @@ class PostsViewControllerTests: XCTestCase {
         let postView = sut.postView(at: index) as? PostCell
         XCTAssertNotNil(postView, file: file, line: line)
         XCTAssertEqual(postView?.descriptionText, post.description, file: file, line: line)
+    }
+
+    func makePost(image: URL = URL(string: "https://any.com")!,
+                  description: String) -> Post {
+        Post(image: image, description: description)
     }
 }
 
