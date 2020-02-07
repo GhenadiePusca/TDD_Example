@@ -86,7 +86,9 @@ class PostsViewController: UITableViewController {
     @objc func refresh() {
         refreshControl?.beginRefreshing()
         postsLoader.load(completion: { [weak self] result in
-            self?.tableModel = (try? result.get()) ?? []
+            if let posts = try? result.get() {
+                self?.tableModel = posts
+            }
             self?.tableView.reloadData()
             self?.refreshControl?.endRefreshing()
         })
@@ -146,6 +148,10 @@ class PostsViewControllerTests: XCTestCase {
 
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
         assertThat(sut, renders: [post, post2])
+
+        sut.simulateReload()
+        postsLoader.completeLoadingWithError(at: 1)
+        assertThat(sut, renders: [post, post2])
     }
     
     // MARK: - Helper methods
@@ -163,7 +169,9 @@ class PostsViewControllerTests: XCTestCase {
                             file: StaticString = #file,
                             line: UInt = #line) {
         guard sut.numberOfRenderedPosts == posts.count else {
-            return XCTFail("Expected to render \(posts.count) posts, instead did render \(sut.numberOfRenderedPosts) posts")
+            return XCTFail("Expected to render \(posts.count) posts, instead did render \(sut.numberOfRenderedPosts) posts",
+                file: file,
+                line: line)
         }
 
         posts.enumerated().forEach { index, post in
