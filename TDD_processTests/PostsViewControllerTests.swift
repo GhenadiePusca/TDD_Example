@@ -61,11 +61,11 @@ class PostsViewController: UITableViewController {
         super.viewDidLoad()
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl?.beginRefreshing()
         refresh()
     }
     
     @objc func refresh() {
+        refreshControl?.beginRefreshing()
         postsLoader.load(completion: { [weak self] _ in
             self?.refreshControl?.endRefreshing()
         })
@@ -92,6 +92,9 @@ class PostsViewControllerTests: XCTestCase {
         
         postsLoader.completeLoadingWithSuccess()
         XCTAssertEqual(sut.isShowingLoadingSpinner, false)
+
+        sut.simulateReload()
+        XCTAssertEqual(sut.isShowingLoadingSpinner, true)
     }
     
     // MARK: - Helper methods
