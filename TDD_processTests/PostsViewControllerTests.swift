@@ -30,6 +30,11 @@ import XCTest
     - On retry the image is loaded again.
  */
 
+struct Post {
+    let image: URL
+    let description: String
+}
+
 func anyError() -> Error {
     NSError(domain: "Test", code: 1)
 }
@@ -39,14 +44,14 @@ class PostsLoader {
         completions.count
     }
     
-    private var completions = [((Result<Void, Error>) -> Void)]()
+    private var completions = [((Result<[Post], Error>) -> Void)]()
 
-    func load(completion: @escaping (Result<Void, Error>) -> Void) {
+    func load(completion: @escaping (Result<[Post], Error>) -> Void) {
         completions.append(completion)
     }
     
-    func completeLoadingWithSuccess(at idx: Int = 0) {
-        completions[idx](.success(()))
+    func completeLoadingWithSuccess(at idx: Int = 0, with posts: [Post] = []) {
+        completions[idx](.success(posts))
     }
 
     func completeLoadingWithError(at idx: Int = 0) {
@@ -56,6 +61,7 @@ class PostsLoader {
 
 class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
+    private var tableModel = [Post]()
 
     init(postsLoader: PostsLoader) {
         self.postsLoader = postsLoader  
@@ -75,9 +81,15 @@ class PostsViewController: UITableViewController {
     
     @objc func refresh() {
         refreshControl?.beginRefreshing()
-        postsLoader.load(completion: { [weak self] _ in
+        postsLoader.load(completion: { [weak self] result in
+            self?.tableModel = (try? result.get()) ?? []
+            self?.tableView.reloadData()
             self?.refreshControl?.endRefreshing()
         })
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tableModel.count
     }
 }
 
@@ -110,11 +122,18 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_loadCompleted_rendersLoadedPosts() {
+        let post = Post(image: URL(string: "https://any.com")!,
+                        description: "Post 1 description")
+        let post2 = Post(image: URL(string: "https://any2.com")!,
+                         description: "Post 2 description")
+
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(sut.numberOfRenderedPosts, 0)
-        
+
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+        XCTAssertEqual(sut.numberOfRenderedPosts, 2)
     }
     
     // MARK: - Helper methods
