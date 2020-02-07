@@ -142,13 +142,10 @@ class PostsViewControllerTests: XCTestCase {
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(sut.numberOfRenderedPosts, 0)
+        assertThat(sut, renders: [])
 
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
-        XCTAssertEqual(sut.numberOfRenderedPosts, 2)
-
-        assertThat(sut, renders: post, at: 0)
-        assertThat(sut, renders: post2, at: 1)
+        assertThat(sut, renders: [post, post2])
     }
     
     // MARK: - Helper methods
@@ -162,11 +159,30 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     private func assertThat(_ sut: PostsViewController,
+                            renders posts: [Post],
+                            file: StaticString = #file,
+                            line: UInt = #line) {
+        guard sut.numberOfRenderedPosts == posts.count else {
+            return XCTFail("Expected to render \(posts.count) posts, instead did render \(sut.numberOfRenderedPosts) posts")
+        }
+
+        posts.enumerated().forEach { index, post in
+            assertThat(sut,
+                       renders: post,
+                       at: index,
+                       file: file,
+                       line: line)
+        }
+    }
+
+    private func assertThat(_ sut: PostsViewController,
                             renders post: Post,
-                            at index: Int) {
+                            at index: Int,
+                            file: StaticString = #file,
+                            line: UInt = #line) {
         let postView = sut.postView(at: index) as? PostCell
-        XCTAssertNotNil(postView)
-        XCTAssertEqual(postView?.descriptionText, post.description)
+        XCTAssertNotNil(postView, file: file, line: line)
+        XCTAssertEqual(postView?.descriptionText, post.description, file: file, line: line)
     }
 }
 
