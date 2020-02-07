@@ -59,6 +59,10 @@ class PostsLoader {
     }
 }
 
+class PostCell: UITableViewCell {
+    let descriptionLabel = UILabel()
+}
+
 class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
     private var tableModel = [Post]()
@@ -90,6 +94,14 @@ class PostsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableModel.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model = tableModel[indexPath.row]
+        let cell = PostCell()
+        cell.descriptionLabel.text = model.description
+
+        return cell
     }
 }
 
@@ -134,6 +146,14 @@ class PostsViewControllerTests: XCTestCase {
 
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
         XCTAssertEqual(sut.numberOfRenderedPosts, 2)
+
+        let post1View = sut.postView(at: 0) as? PostCell
+        XCTAssertNotNil(post1View)
+        XCTAssertEqual(post1View?.descriptionText, post.description)
+
+        let post2View = sut.postView(at: 1) as? PostCell
+        XCTAssertNotNil(post2View)
+        XCTAssertEqual(post2View?.descriptionText, post2.description)
     }
     
     // MARK: - Helper methods
@@ -147,6 +167,11 @@ class PostsViewControllerTests: XCTestCase {
     }
 }
 
+extension PostCell {
+    var descriptionText: String? {
+        descriptionLabel.text
+    }
+}
 extension PostsViewController {
     private var postsSection: Int { 0 }
 
@@ -160,5 +185,11 @@ extension PostsViewController {
 
     var numberOfRenderedPosts: Int {
         tableView.numberOfRows(inSection: postsSection)
+    }
+
+    func postView(at idx: Int) -> UITableViewCell? {
+        let indexPath = IndexPath(row: idx, section: postsSection)
+        return tableView.dataSource?.tableView(tableView,
+                                               cellForRowAt: indexPath)
     }
 }
