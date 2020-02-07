@@ -147,13 +147,8 @@ class PostsViewControllerTests: XCTestCase {
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
         XCTAssertEqual(sut.numberOfRenderedPosts, 2)
 
-        let post1View = sut.postView(at: 0) as? PostCell
-        XCTAssertNotNil(post1View)
-        XCTAssertEqual(post1View?.descriptionText, post.description)
-
-        let post2View = sut.postView(at: 1) as? PostCell
-        XCTAssertNotNil(post2View)
-        XCTAssertEqual(post2View?.descriptionText, post2.description)
+        assertThat(sut, renders: post, at: 0)
+        assertThat(sut, renders: post2, at: 1)
     }
     
     // MARK: - Helper methods
@@ -164,6 +159,14 @@ class PostsViewControllerTests: XCTestCase {
         trackForMemoryLeaks(object: sut, file: file, line: line)
         
         return (sut, postsLoader)
+    }
+
+    private func assertThat(_ sut: PostsViewController,
+                            renders post: Post,
+                            at index: Int) {
+        let postView = sut.postView(at: index) as? PostCell
+        XCTAssertNotNil(postView)
+        XCTAssertEqual(postView?.descriptionText, post.description)
     }
 }
 
