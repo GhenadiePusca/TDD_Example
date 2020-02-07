@@ -35,10 +35,6 @@ struct Post {
     let description: String
 }
 
-func anyError() -> Error {
-    NSError(domain: "Test", code: 1)
-}
-
 class PostsLoader {
     var loadCallCount: Int {
         completions.count
