@@ -1,8 +1,6 @@
 # TDD_Example
 
 This repo is meant to exemplify how to integrate the Test Driven Development into the workflow in order to maximize the utility of unit tests.
- 
-
 
 We'll implement an iOS application that is complicated enough to demonstrate the real usage of TDD, and which will allow developers to corellate the conding examples with daily workflow.
 
@@ -29,16 +27,21 @@ Post image use case:
    - User is able to retry the image loading.
 
 What is done so far(you can follow the granular commit messages to get up to date with whole reasoning):
-- Session nr 1:
-        - Established the setup and main guiding principles.
-        - Tested that the PostsViewController correctly triggers load requests when view becomes visible and on user manual reload.
-- Session nr 2:
-        - Stepped up the mase by making use of the established guiding principles.
-        - Tested the loading indicator functionality behaves correctly - shown when loading is triggered and hidden on load completion be it success or fail.
-        - Tested that the current number of posts is shown and that the posts description is correctly shown.
-        - Exemplified how we can test the table view content.
+
+Session nr 1:
+
+     - Established the setup and main guiding principles.
+     - Tested that the PostsViewController correctly triggers load requests when view becomes visible and on user manual reload.
+        
+Session nr 2:
+
+     - Stepped up the mase by making use of the established guiding principles.
+     - Tested the loading indicator functionality behaves correctly - shown when loading is triggered and hidden on load completion be it success or fail.
+     - Tested that the current number of posts is shown and that the posts description is correctly shown.
+     - Exemplified how we can test the table view content.
         
 Next session:
+
     - Extract production code from the mock class.
     - Move the components from the test target to production target.
     - Defining the components access modifiers, hints of modularity.
