@@ -163,6 +163,12 @@ class PostsViewControllerTests: XCTestCase {
         postsLoader.completeImageLoading(at: 1, with: .failure(anyError()))
         XCTAssertEqual(view0?.showsRetry, true)
         XCTAssertEqual(view1?.showsRetry, true)
+
+        view0?.simulateRetryTapped()
+        XCTAssertEqual(view0?.showsRetry, false)
+
+        view1?.simulateRetryTapped()
+        XCTAssertEqual(view1?.showsRetry, false)
     }
 
     func test_imageLoadingRetry_requestsImageLoadOnRetryTap() {
