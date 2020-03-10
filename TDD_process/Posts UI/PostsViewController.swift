@@ -51,7 +51,10 @@ public class PostsViewController: UITableViewController {
         let cell = PostCell()
         cell.descriptionLabel.text = model.description
         cell.startAnimating()
-        imageLoadingTasks.append(imageDataLoader.loadImageData(for: model.image))
+        let task = imageDataLoader.loadImageData(for: model.image) { [weak cell] in
+            cell?.stopAnimating()
+        }
+        imageLoadingTasks.append(task)
 
         return cell
     }

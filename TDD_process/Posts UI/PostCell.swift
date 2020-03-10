@@ -16,4 +16,9 @@ public class PostCell: UITableViewCell {
         loadingIndicator.isHidden = false
         loadingIndicator.startAnimating()
     }
+
+    func stopAnimating() {
+        loadingIndicator.isHidden = true
+        loadingIndicator.stopAnimating()
+    }
 }

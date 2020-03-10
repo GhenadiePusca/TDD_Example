@@ -131,6 +131,30 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
     }
 
+    func test_imageLoading_hidesImageLoadingOnLoadCompletion() {
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+        let view1 = sut.simulatePostVisible(at: 1)
+        XCTAssertEqual(view0?.showsImageLoadingIndicator, true)
+        XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
+
+        postsLoader.completeImageLoading(at: 0)
+        XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
+        XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
+
+        postsLoader.completeImageLoading(at: 1)
+        XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
+        XCTAssertEqual(view1?.showsImageLoadingIndicator, false)
+    }
+
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
@@ -180,9 +204,9 @@ class PostsViewControllerTests: XCTestCase {
             completions.count
         }
 
-        private var completions = [LoadCompletion]()
+        private var completions = [PostsLoader.LoadCompletion]()
 
-        func load(completion: @escaping LoadCompletion) {
+        func load(completion: @escaping PostsLoader.LoadCompletion) {
             completions.append(completion)
         }
 
@@ -197,6 +221,7 @@ class PostsViewControllerTests: XCTestCase {
         // MARK: - Image data loading
         var imageRequests = [URL]()
         var cancelledImageRequests = [URL]()
+        private var imageLoadCompletions = [ImageDataLoader.LoadCompletion]()
 
         private struct MockLoadingTask: LoadingTask {
             let onCancell: () -> Void
@@ -206,12 +231,17 @@ class PostsViewControllerTests: XCTestCase {
             }
         }
 
-        func loadImageData(for url: URL) -> LoadingTask {
+        func loadImageData(for url: URL, completion: @escaping ImageDataLoader.LoadCompletion) -> LoadingTask {
             imageRequests.append(url)
+            imageLoadCompletions.append(completion)
 
             return MockLoadingTask { [weak self] in
                 self?.cancelledImageRequests.append(url)
             }
+        }
+
+        func completeImageLoading(at idx: Int) {
+            imageLoadCompletions[idx]()
         }
     }
 }

@@ -13,5 +13,6 @@ public protocol LoadingTask {
 }
 
 public protocol ImageDataLoader {
-    func loadImageData(for url: URL) -> LoadingTask
+    typealias LoadCompletion = () -> Void
+    func loadImageData(for url: URL, completion: @escaping LoadCompletion) -> LoadingTask
 }
