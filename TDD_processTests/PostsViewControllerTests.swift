@@ -92,6 +92,27 @@ class PostsViewControllerTests: XCTestCase {
         sut.simulatePostVisible(at: 1)
         XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image])
     }
+
+    func test_imageLoading_cancellsImageLoadingWhenPostIsNoMoreVisible() {
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+
+        sut.simulatePostVisible(at: 0)
+        sut.simulatePostVisible(at: 1)
+        XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image])
+
+        sut.simulatePostNoMoreVisible(at: 0)
+        XCTAssertEqual(postsLoader.cancelledImageRequests, [post.image])
+
+        sut.simulatePostNoMoreVisible(at: 1)
+        XCTAssertEqual(postsLoader.cancelledImageRequests, [post.image, post2.image])
+    }
     
     // MARK: - Helper methods
 
@@ -158,9 +179,22 @@ class PostsViewControllerTests: XCTestCase {
 
         // MARK: - Image data loading
         var imageRequests = [URL]()
+        var cancelledImageRequests = [URL]()
 
-        func loadImageData(for url: URL) {
+        private struct MockLoadingTask: LoadingTask {
+            let onCancell: () -> Void
+
+            func cancel() {
+                onCancell()
+            }
+        }
+
+        func loadImageData(for url: URL) -> LoadingTask {
             imageRequests.append(url)
+
+            return MockLoadingTask { [weak self] in
+                self?.cancelledImageRequests.append(url)
+            }
         }
     }
 }
@@ -185,8 +219,17 @@ extension PostsViewController {
         tableView.numberOfRows(inSection: postsSection)
     }
 
-    func simulatePostVisible(at idx: Int) {
-        postView(at: idx)
+    @discardableResult
+    func simulatePostVisible(at idx: Int) -> PostCell? {
+        postView(at: idx) as? PostCell
+    }
+
+    func simulatePostNoMoreVisible(at idx: Int) {
+        let cell = simulatePostVisible(at: idx)!
+        let indexPath = IndexPath(row: idx, section: postsSection)
+        tableView.delegate?.tableView?(tableView,
+                                       didEndDisplaying: cell,
+                                       forRowAt: indexPath)
     }
 
     func postView(at idx: Int) -> UITableViewCell? {

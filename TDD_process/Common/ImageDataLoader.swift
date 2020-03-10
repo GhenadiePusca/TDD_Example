@@ -8,6 +8,10 @@
 
 import Foundation
 
+public protocol LoadingTask {
+    func cancel()
+}
+
 public protocol ImageDataLoader {
-    func loadImageData(for url: URL)
+    func loadImageData(for url: URL) -> LoadingTask
 }

@@ -12,6 +12,7 @@ public class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
     private let imageDataLoader: ImageDataLoader
     private var tableModel = [Post]()
+    private var imageLoadingTasks = [LoadingTask]()
 
     public init(postsLoader: PostsLoader, imageDataLoader: ImageDataLoader) {
         self.postsLoader = postsLoader
@@ -49,8 +50,14 @@ public class PostsViewController: UITableViewController {
         let model = tableModel[indexPath.row]
         let cell = PostCell()
         cell.descriptionLabel.text = model.description
-        imageDataLoader.loadImageData(for: model.image)
+        imageLoadingTasks.append(imageDataLoader.loadImageData(for: model.image))
 
         return cell
+    }
+
+    public override func tableView(_ tableView: UITableView,
+                                   didEndDisplaying cell: UITableViewCell,
+                                   forRowAt indexPath: IndexPath) {
+        imageLoadingTasks[indexPath.row].cancel()
     }
 }
