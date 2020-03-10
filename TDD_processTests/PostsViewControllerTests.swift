@@ -77,8 +77,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_imageLoading_startsImageLoadingWhenPostIsVisible() {
-        let post = makePost(description: "Post 1 description")
-        let post2 = makePost(description: "Post 2 description")
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -94,8 +94,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_imageLoading_cancellsImageLoadingWhenPostIsNoMoreVisible() {
-        let post = makePost(description: "Post 1 description")
-        let post2 = makePost(description: "Post 2 description")
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -115,8 +115,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_imageLoading_showsImageLoadingIndicatorWhenPostIsVisible() {
-        let post = makePost(description: "Post 1 description")
-        let post2 = makePost(description: "Post 2 description")
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -132,8 +132,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_imageLoading_hidesImageLoadingOnLoadCompletion() {
-        let post = makePost(description: "Post 1 description")
-        let post2 = makePost(description: "Post 2 description")
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -156,8 +156,8 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func test_imageLoading_showsRetryOnError() {
-        let post = makePost(description: "Post 1 description")
-        let post2 = makePost(description: "Post 2 description")
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
@@ -220,7 +220,7 @@ class PostsViewControllerTests: XCTestCase {
     }
 
     func makePost(image: URL = URL(string: "https://any.com")!,
-                  description: String) -> Post {
+                  description: String = "description") -> Post {
         Post(image: image, description: description)
     }
 
