@@ -15,6 +15,7 @@
 		C411A27223E45D9D00D637BC /* PostsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27123E45D9D00D637BC /* PostsViewControllerTests.swift */; };
 		C411A27A23E4644300D637BC /* MemoryLeaksTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */; };
 		C411A27C23E4646E00D637BC /* UIControll+EventSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */; };
+		C46BB0C624182157003D81D9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C524182157003D81D9 /* Post.swift */; };
 		C4A6738323ED90B10098AC51 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6738223ED90B10098AC51 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		C411A27123E45D9D00D637BC /* PostsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewControllerTests.swift; sourceTree = "<group>"; };
 		C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryLeaksTracking.swift; sourceTree = "<group>"; };
 		C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControll+EventSimulation.swift"; sourceTree = "<group>"; };
+		C46BB0C524182157003D81D9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C4A6738223ED90B10098AC51 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +85,7 @@
 		C411A24023E45CF800D637BC /* TDD_process */ = {
 			isa = PBXGroup;
 			children = (
+				C46BB0C42418214B003D81D9 /* Posts Feature */,
 				C411A24123E45CF800D637BC /* AppDelegate.swift */,
 				C411A24323E45CF800D637BC /* SceneDelegate.swift */,
 				C411A24723E45CFB00D637BC /* Assets.xcassets */,
@@ -119,6 +122,14 @@
 				C4A6738223ED90B10098AC51 /* Utils.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		C46BB0C42418214B003D81D9 /* Posts Feature */ = {
+			isa = PBXGroup;
+			children = (
+				C46BB0C524182157003D81D9 /* Post.swift */,
+			);
+			path = "Posts Feature";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,6 +234,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C46BB0C624182157003D81D9 /* Post.swift in Sources */,
 				C411A24223E45CF800D637BC /* AppDelegate.swift in Sources */,
 				C411A24423E45CF800D637BC /* SceneDelegate.swift in Sources */,
 			);

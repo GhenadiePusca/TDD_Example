@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+import TDD_process
 
 /*
     As a user I do want to see a list of the available posts.
@@ -29,11 +30,6 @@ import XCTest
     - If image load failed, a retry button is shown.
     - On retry the image is loaded again.
  */
-
-struct Post {
-    let image: URL
-    let description: String
-}
 
 class PostsLoader {
     var loadCallCount: Int {
