@@ -146,11 +146,11 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(view0?.showsImageLoadingIndicator, true)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
 
-        postsLoader.completeImageLoading(at: 0)
+        postsLoader.completeImageLoading(at: 0, with: .success(()))
         XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
 
-        postsLoader.completeImageLoading(at: 1)
+        postsLoader.completeImageLoading(at: 1, with: .failure(anyError()))
         XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, false)
     }
