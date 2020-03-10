@@ -31,8 +31,6 @@ import TDD_process
     - On retry the image is loaded again.
  */
 
-
-
 class PostsViewControllerTests: XCTestCase { 
     func test_loadRequestActions_requestsLoad() {
         let (sut, postsLoader) = makeSut()
@@ -77,12 +75,22 @@ class PostsViewControllerTests: XCTestCase {
         postsLoader.completeLoadingWithError(at: 1)
         assertThat(sut, renders: [post, post2])
     }
+
+    func test_imageLoading_startsImageLoadingWhenPostIsVisible() {
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+    }
     
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
         let postsLoader = PostsLoaderMock()
-        let sut = PostsViewController(postsLoader: postsLoader)
+        let sut = PostsViewController(postsLoader: postsLoader, imageDataLoader: postsLoader)
         trackForMemoryLeaks(object: sut, file: file, line: line)
         
         return (sut, postsLoader)
@@ -122,7 +130,7 @@ class PostsViewControllerTests: XCTestCase {
         Post(image: image, description: description)
     }
 
-    private class PostsLoaderMock: PostsLoader {
+    private class PostsLoaderMock: PostsLoader, ImageDataLoader {
         var loadCallCount: Int {
             completions.count
         }
@@ -139,6 +147,13 @@ class PostsViewControllerTests: XCTestCase {
 
         func completeLoadingWithError(at idx: Int = 0) {
             completions[idx](.failure(anyError()))
+        }
+
+        // MARK: - Image data loading
+        var imageRequests = [URL]()
+
+        func loadImageData(for url: URL) {
+            imageRequests.append(url)
         }
     }
 }

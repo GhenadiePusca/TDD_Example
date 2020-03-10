@@ -19,6 +19,7 @@
 		C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C72418242C003D81D9 /* PostsLoader.swift */; };
 		C46BB0CB241824B2003D81D9 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0CA241824B2003D81D9 /* PostCell.swift */; };
 		C46BB0CD241824E0003D81D9 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0CC241824E0003D81D9 /* PostsViewController.swift */; };
+		C46BB0D224182618003D81D9 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0D124182618003D81D9 /* ImageDataLoader.swift */; };
 		C4A6738323ED90B10098AC51 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6738223ED90B10098AC51 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		C46BB0C72418242C003D81D9 /* PostsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsLoader.swift; sourceTree = "<group>"; };
 		C46BB0CA241824B2003D81D9 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		C46BB0CC241824E0003D81D9 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		C46BB0D124182618003D81D9 /* ImageDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
 		C4A6738223ED90B10098AC51 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 		C411A24023E45CF800D637BC /* TDD_process */ = {
 			isa = PBXGroup;
 			children = (
+				C46BB0CE24182560003D81D9 /* Common */,
 				C46BB0C924182493003D81D9 /* Posts UI */,
 				C46BB0C42418214B003D81D9 /* Posts Feature */,
 				C411A24123E45CF800D637BC /* AppDelegate.swift */,
@@ -147,6 +150,14 @@
 				C46BB0CC241824E0003D81D9 /* PostsViewController.swift */,
 			);
 			path = "Posts UI";
+			sourceTree = "<group>";
+		};
+		C46BB0CE24182560003D81D9 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C46BB0D124182618003D81D9 /* ImageDataLoader.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,6 +265,7 @@
 				C46BB0CD241824E0003D81D9 /* PostsViewController.swift in Sources */,
 				C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */,
 				C46BB0C624182157003D81D9 /* Post.swift in Sources */,
+				C46BB0D224182618003D81D9 /* ImageDataLoader.swift in Sources */,
 				C411A24223E45CF800D637BC /* AppDelegate.swift in Sources */,
 				C411A24423E45CF800D637BC /* SceneDelegate.swift in Sources */,
 				C46BB0CB241824B2003D81D9 /* PostCell.swift in Sources */,

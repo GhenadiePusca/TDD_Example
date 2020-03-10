@@ -10,10 +10,12 @@ import UIKit
 
 public class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
+    private let imageDataLoader: ImageDataLoader
     private var tableModel = [Post]()
 
-    public init(postsLoader: PostsLoader) {
+    public init(postsLoader: PostsLoader, imageDataLoader: ImageDataLoader) {
         self.postsLoader = postsLoader
+        self.imageDataLoader = imageDataLoader
         super.init(nibName: nil, bundle: nil)
     }
 
