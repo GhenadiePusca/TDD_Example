@@ -13,6 +13,7 @@ public protocol LoadingTask {
 }
 
 public protocol ImageDataLoader {
-    typealias LoadCompletion = () -> Void
+    typealias LoadResult = Result<Void, Error>
+    typealias LoadCompletion = (LoadResult) -> Void
     func loadImageData(for url: URL, completion: @escaping LoadCompletion) -> LoadingTask
 }

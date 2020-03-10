@@ -51,8 +51,16 @@ public class PostsViewController: UITableViewController {
         let cell = PostCell()
         cell.descriptionLabel.text = model.description
         cell.startAnimating()
-        let task = imageDataLoader.loadImageData(for: model.image) { [weak cell] in
+        cell.retryButton.isHidden = true
+
+        let task = imageDataLoader.loadImageData(for: model.image) { [weak cell] result in
             cell?.stopAnimating()
+
+            if case .failure = result {
+                cell?.retryButton.isHidden = false
+            } else {
+                cell?.retryButton.isHidden = true
+            }
         }
         imageLoadingTasks.append(task)
 

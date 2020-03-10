@@ -155,6 +155,31 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.showsImageLoadingIndicator, false)
     }
 
+    func test_imageLoading_showsRetryOnError() {
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+        let view1 = sut.simulatePostVisible(at: 1)
+
+        XCTAssertEqual(view0?.showsRetry, false)
+        XCTAssertEqual(view1?.showsRetry, false)
+
+        postsLoader.completeImageLoading(at: 0, with: .failure(anyError()))
+        XCTAssertEqual(view0?.showsRetry, true)
+        XCTAssertEqual(view1?.showsRetry, false)
+
+        postsLoader.completeImageLoading(at: 1, with: .failure(anyError()))
+        XCTAssertEqual(view0?.showsRetry, true)
+        XCTAssertEqual(view1?.showsRetry, true)
+    }
+
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
@@ -240,8 +265,8 @@ class PostsViewControllerTests: XCTestCase {
             }
         }
 
-        func completeImageLoading(at idx: Int) {
-            imageLoadCompletions[idx]()
+        func completeImageLoading(at idx: Int = 0, with result: ImageDataLoader.LoadResult = .success(())) {
+            imageLoadCompletions[idx](result)
         }
     }
 }
@@ -254,7 +279,12 @@ extension PostCell {
     var showsImageLoadingIndicator: Bool {
         !loadingIndicator.isHidden && loadingIndicator.isAnimating
     }
+
+    var showsRetry: Bool {
+        !retryButton.isHidden
+    }
 }
+
 extension PostsViewController {
     private var postsSection: Int { 0 }
 
