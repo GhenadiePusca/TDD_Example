@@ -114,7 +114,7 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(postsLoader.cancelledImageRequests, [post.image, post2.image])
     }
 
-    func test_imageLoading_showsImageLoadingIndicatorWhenPostIsVisible() {
+    func test_imageLoading_imageLoadingIndicatorBehavior() {
         let post = makePost(image: URL(string: "https://any.com")!)
         let post2 = makePost(image: URL(string: "https://any2.com")!)
 
@@ -122,28 +122,10 @@ class PostsViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
 
-        XCTAssertEqual(postsLoader.imageRequests, [])
-
         let view0 = sut.simulatePostVisible(at: 0)
         XCTAssertEqual(view0?.showsImageLoadingIndicator, true)
 
         let view1 = sut.simulatePostVisible(at: 1)
-        XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
-    }
-
-    func test_imageLoading_hidesImageLoadingOnLoadCompletion() {
-        let post = makePost(image: URL(string: "https://any.com")!)
-        let post2 = makePost(image: URL(string: "https://any2.com")!)
-
-        let (sut, postsLoader) = makeSut()
-        sut.loadViewIfNeeded()
-        postsLoader.completeLoadingWithSuccess(with: [post, post2])
-
-        XCTAssertEqual(postsLoader.imageRequests, [])
-
-        let view0 = sut.simulatePostVisible(at: 0)
-        let view1 = sut.simulatePostVisible(at: 1)
-        XCTAssertEqual(view0?.showsImageLoadingIndicator, true)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
 
         postsLoader.completeImageLoading(at: 0, with: .success(()))
@@ -153,6 +135,9 @@ class PostsViewControllerTests: XCTestCase {
         postsLoader.completeImageLoading(at: 1, with: .failure(anyError()))
         XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, false)
+
+        view1?.simulateRetryTapped()
+        XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
     }
 
     func test_imageLoading_showsRetryOnError() {

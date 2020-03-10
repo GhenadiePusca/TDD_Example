@@ -50,11 +50,12 @@ public class PostsViewController: UITableViewController {
         let model = tableModel[indexPath.row]
         let cell = PostCell()
         cell.descriptionLabel.text = model.description
-        cell.startAnimating()
         cell.retryButton.isHidden = true
 
         let loadImage = { [weak self, weak cell] in
             guard let self = self else { return }
+            cell?.startAnimating()
+
             self.imageLoadingTasks[indexPath] = self.imageDataLoader.loadImageData(for: model.image) { [weak cell] result in
                 cell?.stopAnimating()
 
