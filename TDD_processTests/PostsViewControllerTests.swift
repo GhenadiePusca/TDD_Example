@@ -217,6 +217,20 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.shownImageData, post1ImageData)
     }
 
+    func test_imageLoading_retryIsShownOnInvalidImageData() {
+        let post = makePost(image: URL(string: "https://any.com")!)
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+
+        let invalidImageData = Data("invalid image data".utf8)
+        postsLoader.completeImageLoading(at: 0, with: .success(invalidImageData))
+        XCTAssertEqual(view0?.showsRetry, true)
+    }
+
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
