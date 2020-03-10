@@ -11,3 +11,7 @@ import Foundation
 func anyError() -> Error {
     NSError(domain: "Test", code: 1)
 }
+
+func anyData() -> Data {
+    Data()
+}

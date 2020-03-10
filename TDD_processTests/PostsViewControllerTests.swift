@@ -128,7 +128,7 @@ class PostsViewControllerTests: XCTestCase {
         let view1 = sut.simulatePostVisible(at: 1)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
 
-        postsLoader.completeImageLoading(at: 0, with: .success(()))
+        postsLoader.completeImageLoading(at: 0, with: .success(anyData()))
         XCTAssertEqual(view0?.showsImageLoadingIndicator, false)
         XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
 
@@ -147,8 +147,6 @@ class PostsViewControllerTests: XCTestCase {
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
         postsLoader.completeLoadingWithSuccess(with: [post, post2])
-
-        XCTAssertEqual(postsLoader.imageRequests, [])
 
         let view0 = sut.simulatePostVisible(at: 0)
         let view1 = sut.simulatePostVisible(at: 1)
@@ -193,6 +191,30 @@ class PostsViewControllerTests: XCTestCase {
 
         view1?.simulateRetryTapped()
         XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image, post.image, post2.image])
+    }
+
+    func test_imageView_showsImageOnSuccesfullLoad() {
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+        let view1 = sut.simulatePostVisible(at: 1)
+
+        XCTAssertNil(view0?.shownImageData)
+        XCTAssertNil(view1?.shownImageData)
+
+        let post0ImageData = UIImage.make(withColor: .red).pngData()!
+        postsLoader.completeImageLoading(at: 0, with: .success(post0ImageData))
+
+        XCTAssertEqual(view0?.shownImageData, post0ImageData)
+
+        let post1ImageData = UIImage.make(withColor: .blue).pngData()!
+        postsLoader.completeImageLoading(at: 1, with: .success(post1ImageData))
+        XCTAssertEqual(view1?.shownImageData, post1ImageData)
     }
 
     // MARK: - Helper methods
@@ -280,7 +302,7 @@ class PostsViewControllerTests: XCTestCase {
             }
         }
 
-        func completeImageLoading(at idx: Int = 0, with result: ImageDataLoader.LoadResult = .success(())) {
+        func completeImageLoading(at idx: Int = 0, with result: ImageDataLoader.LoadResult = .success(Data())) {
             imageLoadCompletions[idx](result)
         }
     }
@@ -297,6 +319,10 @@ extension PostCell {
 
     var showsRetry: Bool {
         !retryButton.isHidden
+    }
+
+    var shownImageData: Data? {
+        postImageView.image?.pngData()
     }
 
     func simulateRetryTapped() {
@@ -337,4 +363,17 @@ extension PostsViewController {
         return tableView.dataSource?.tableView(tableView,
                                                cellForRowAt: indexPath)
     }
+}
+
+private extension UIImage {
+   static func make(withColor color: UIColor) -> UIImage {
+       let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+       UIGraphicsBeginImageContext(rect.size)
+       let context = UIGraphicsGetCurrentContext()!
+       context.setFillColor(color.cgColor)
+       context.fill(rect)
+       let img = UIGraphicsGetImageFromCurrentImageContext()
+       UIGraphicsEndImageContext()
+       return img!
+   }
 }

@@ -59,10 +59,12 @@ public class PostsViewController: UITableViewController {
             self.imageLoadingTasks[indexPath] = self.imageDataLoader.loadImageData(for: model.image) { [weak cell] result in
                 cell?.stopAnimating()
 
-                if case .failure = result {
-                    cell?.retryButton.isHidden = false
-                } else {
+                switch result {
+                case .success(let data):
                     cell?.retryButton.isHidden = true
+                    cell?.postImageView.image = UIImage(data: data)
+                case .failure:
+                    cell?.retryButton.isHidden = false
                 }
             }
         }

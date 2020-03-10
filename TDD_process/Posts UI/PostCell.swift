@@ -12,6 +12,7 @@ public class PostCell: UITableViewCell {
     public let descriptionLabel = UILabel()
     public let loadingIndicator = UIActivityIndicatorView()
     public lazy var retryButton = makeRetryButton()
+    public let postImageView = UIImageView()
 
     var onRetryTapped: () -> Void = { }
 
