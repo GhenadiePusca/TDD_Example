@@ -82,8 +82,15 @@ class PostsViewControllerTests: XCTestCase {
 
         let (sut, postsLoader) = makeSut()
         sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
 
         XCTAssertEqual(postsLoader.imageRequests, [])
+
+        sut.simulatePostVisible(at: 0)
+        XCTAssertEqual(postsLoader.imageRequests, [post.image])
+
+        sut.simulatePostVisible(at: 1)
+        XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image])
     }
     
     // MARK: - Helper methods
@@ -176,6 +183,10 @@ extension PostsViewController {
 
     var numberOfRenderedPosts: Int {
         tableView.numberOfRows(inSection: postsSection)
+    }
+
+    func simulatePostVisible(at idx: Int) {
+        postView(at: idx)
     }
 
     func postView(at idx: Int) -> UITableViewCell? {

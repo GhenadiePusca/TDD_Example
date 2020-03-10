@@ -49,6 +49,7 @@ public class PostsViewController: UITableViewController {
         let model = tableModel[indexPath.row]
         let cell = PostCell()
         cell.descriptionLabel.text = model.description
+        imageDataLoader.loadImageData(for: model.image)
 
         return cell
     }
