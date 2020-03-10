@@ -31,10 +31,6 @@ import TDD_process
     - On retry the image is loaded again.
  */
 
-class PostCell: UITableViewCell {
-    let descriptionLabel = UILabel()
-}
-
 class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
     private var tableModel = [Post]()
