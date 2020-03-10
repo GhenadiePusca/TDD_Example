@@ -113,7 +113,24 @@ class PostsViewControllerTests: XCTestCase {
         sut.simulatePostNoMoreVisible(at: 1)
         XCTAssertEqual(postsLoader.cancelledImageRequests, [post.image, post2.image])
     }
-    
+
+    func test_imageLoading_showsImageLoadingIndicatorWhenPostIsVisible() {
+        let post = makePost(description: "Post 1 description")
+        let post2 = makePost(description: "Post 2 description")
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+        XCTAssertEqual(view0?.showsImageLoadingIndicator, true)
+
+        let view1 = sut.simulatePostVisible(at: 1)
+        XCTAssertEqual(view1?.showsImageLoadingIndicator, true)
+    }
+
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
@@ -202,6 +219,10 @@ class PostsViewControllerTests: XCTestCase {
 extension PostCell {
     var descriptionText: String? {
         descriptionLabel.text
+    }
+
+    var showsImageLoadingIndicator: Bool {
+        !loadingIndicator.isHidden && loadingIndicator.isAnimating
     }
 }
 extension PostsViewController {

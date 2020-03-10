@@ -10,4 +10,10 @@ import UIKit
 
 public class PostCell: UITableViewCell {
     public let descriptionLabel = UILabel()
+    public let loadingIndicator = UIActivityIndicatorView()
+
+    func startAnimating() {
+        loadingIndicator.isHidden = false
+        loadingIndicator.startAnimating()
+    }
 }
