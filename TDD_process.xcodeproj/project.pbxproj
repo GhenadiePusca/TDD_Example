@@ -16,6 +16,7 @@
 		C411A27A23E4644300D637BC /* MemoryLeaksTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */; };
 		C411A27C23E4646E00D637BC /* UIControll+EventSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */; };
 		C46BB0C624182157003D81D9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C524182157003D81D9 /* Post.swift */; };
+		C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C72418242C003D81D9 /* PostsLoader.swift */; };
 		C4A6738323ED90B10098AC51 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6738223ED90B10098AC51 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		C411A27923E4644300D637BC /* MemoryLeaksTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryLeaksTracking.swift; sourceTree = "<group>"; };
 		C411A27B23E4646E00D637BC /* UIControll+EventSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControll+EventSimulation.swift"; sourceTree = "<group>"; };
 		C46BB0C524182157003D81D9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		C46BB0C72418242C003D81D9 /* PostsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsLoader.swift; sourceTree = "<group>"; };
 		C4A6738223ED90B10098AC51 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				C46BB0C524182157003D81D9 /* Post.swift */,
+				C46BB0C72418242C003D81D9 /* PostsLoader.swift */,
 			);
 			path = "Posts Feature";
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */,
 				C46BB0C624182157003D81D9 /* Post.swift in Sources */,
 				C411A24223E45CF800D637BC /* AppDelegate.swift in Sources */,
 				C411A24423E45CF800D637BC /* SceneDelegate.swift in Sources */,

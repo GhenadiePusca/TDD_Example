@@ -31,10 +31,6 @@ import TDD_process
     - On retry the image is loaded again.
  */
 
-protocol PostsLoader {
-    func load(completion: @escaping (Result<[Post], Error>) -> Void)
-}
-
 class PostCell: UITableViewCell {
     let descriptionLabel = UILabel()
 }
@@ -177,9 +173,9 @@ class PostsViewControllerTests: XCTestCase {
             completions.count
         }
 
-        private var completions = [((Result<[Post], Error>) -> Void)]()
+        private var completions = [LoadCompletion]()
 
-        func load(completion: @escaping (Result<[Post], Error>) -> Void) {
+        func load(completion: @escaping LoadCompletion) {
             completions.append(completion)
         }
 
