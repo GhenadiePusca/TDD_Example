@@ -13,6 +13,10 @@ extension UIControl {
         simulateEvent(event: .valueChanged)
     }
 
+    func simulateTap() {
+        simulateEvent(event: .touchUpInside)
+    }
+
     func simulateEvent(event: Event) {
         allTargets.forEach { target in
             actions(forTarget: target,

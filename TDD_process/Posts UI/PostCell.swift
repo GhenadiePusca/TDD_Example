@@ -11,7 +11,9 @@ import UIKit
 public class PostCell: UITableViewCell {
     public let descriptionLabel = UILabel()
     public let loadingIndicator = UIActivityIndicatorView()
-    public let retryButton = UIButton()
+    public lazy var retryButton = makeRetryButton()
+
+    var onRetryTapped: () -> Void = { }
 
     func startAnimating() {
         loadingIndicator.isHidden = false
@@ -21,5 +23,15 @@ public class PostCell: UITableViewCell {
     func stopAnimating() {
         loadingIndicator.isHidden = true
         loadingIndicator.stopAnimating()
+    }
+
+    private func makeRetryButton() -> UIButton {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(retryTapped), for: .touchUpInside)
+        return button
+    }
+
+    @objc func retryTapped() {
+        onRetryTapped()
     }
 }

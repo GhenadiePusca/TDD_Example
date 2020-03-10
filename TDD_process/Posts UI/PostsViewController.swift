@@ -12,7 +12,7 @@ public class PostsViewController: UITableViewController {
     private let postsLoader: PostsLoader
     private let imageDataLoader: ImageDataLoader
     private var tableModel = [Post]()
-    private var imageLoadingTasks = [LoadingTask]()
+    private var imageLoadingTasks = [IndexPath: LoadingTask]()
 
     public init(postsLoader: PostsLoader, imageDataLoader: ImageDataLoader) {
         self.postsLoader = postsLoader
@@ -53,16 +53,21 @@ public class PostsViewController: UITableViewController {
         cell.startAnimating()
         cell.retryButton.isHidden = true
 
-        let task = imageDataLoader.loadImageData(for: model.image) { [weak cell] result in
-            cell?.stopAnimating()
+        let loadImage = { [weak self, weak cell] in
+            guard let self = self else { return }
+            self.imageLoadingTasks[indexPath] = self.imageDataLoader.loadImageData(for: model.image) { [weak cell] result in
+                cell?.stopAnimating()
 
-            if case .failure = result {
-                cell?.retryButton.isHidden = false
-            } else {
-                cell?.retryButton.isHidden = true
+                if case .failure = result {
+                    cell?.retryButton.isHidden = false
+                } else {
+                    cell?.retryButton.isHidden = true
+                }
             }
         }
-        imageLoadingTasks.append(task)
+
+        cell.onRetryTapped = loadImage
+        loadImage()
 
         return cell
     }
@@ -70,6 +75,6 @@ public class PostsViewController: UITableViewController {
     public override func tableView(_ tableView: UITableView,
                                    didEndDisplaying cell: UITableViewCell,
                                    forRowAt indexPath: IndexPath) {
-        imageLoadingTasks[indexPath.row].cancel()
+        imageLoadingTasks[indexPath]?.cancel()
     }
 }

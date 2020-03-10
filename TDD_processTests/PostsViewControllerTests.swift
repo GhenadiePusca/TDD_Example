@@ -180,6 +180,30 @@ class PostsViewControllerTests: XCTestCase {
         XCTAssertEqual(view1?.showsRetry, true)
     }
 
+    func test_imageLoadingRetry_requestsImageLoadOnRetryTap() {
+        let post = makePost(image: URL(string: "https://any.com")!)
+        let post2 = makePost(image: URL(string: "https://any2.com")!)
+
+        let (sut, postsLoader) = makeSut()
+        sut.loadViewIfNeeded()
+        postsLoader.completeLoadingWithSuccess(with: [post, post2])
+
+        XCTAssertEqual(postsLoader.imageRequests, [])
+
+        let view0 = sut.simulatePostVisible(at: 0)
+        let view1 = sut.simulatePostVisible(at: 1)
+        XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image])
+
+        postsLoader.completeImageLoading(at: 0, with: .failure(anyError()))
+        postsLoader.completeImageLoading(at: 1, with: .failure(anyError()))
+
+        view0?.simulateRetryTapped()
+        XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image, post.image,])
+
+        view1?.simulateRetryTapped()
+        XCTAssertEqual(postsLoader.imageRequests, [post.image, post2.image, post.image, post2.image])
+    }
+
     // MARK: - Helper methods
 
     private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
@@ -282,6 +306,10 @@ extension PostCell {
 
     var showsRetry: Bool {
         !retryButton.isHidden
+    }
+
+    func simulateRetryTapped() {
+        retryButton.simulateTap()
     }
 }
 
