@@ -31,49 +31,7 @@ import TDD_process
     - On retry the image is loaded again.
  */
 
-class PostsViewController: UITableViewController {
-    private let postsLoader: PostsLoader
-    private var tableModel = [Post]()
 
-    init(postsLoader: PostsLoader) {
-        self.postsLoader = postsLoader  
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refresh()
-    }
-    
-    @objc func refresh() {
-        refreshControl?.beginRefreshing()
-        postsLoader.load(completion: { [weak self] result in
-            if let posts = try? result.get() {
-                self?.tableModel = posts
-            }
-            self?.tableView.reloadData()
-            self?.refreshControl?.endRefreshing()
-        })
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableModel.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = tableModel[indexPath.row]
-        let cell = PostCell()
-        cell.descriptionLabel.text = model.description
-
-        return cell
-    }
-}
 
 class PostsViewControllerTests: XCTestCase { 
     func test_loadRequestActions_requestsLoad() {

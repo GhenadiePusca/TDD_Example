@@ -18,6 +18,7 @@
 		C46BB0C624182157003D81D9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C524182157003D81D9 /* Post.swift */; };
 		C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0C72418242C003D81D9 /* PostsLoader.swift */; };
 		C46BB0CB241824B2003D81D9 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0CA241824B2003D81D9 /* PostCell.swift */; };
+		C46BB0CD241824E0003D81D9 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46BB0CC241824E0003D81D9 /* PostsViewController.swift */; };
 		C4A6738323ED90B10098AC51 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6738223ED90B10098AC51 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		C46BB0C524182157003D81D9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		C46BB0C72418242C003D81D9 /* PostsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsLoader.swift; sourceTree = "<group>"; };
 		C46BB0CA241824B2003D81D9 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		C46BB0CC241824E0003D81D9 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		C4A6738223ED90B10098AC51 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				C46BB0CA241824B2003D81D9 /* PostCell.swift */,
+				C46BB0CC241824E0003D81D9 /* PostsViewController.swift */,
 			);
 			path = "Posts UI";
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C46BB0CD241824E0003D81D9 /* PostsViewController.swift in Sources */,
 				C46BB0C82418242C003D81D9 /* PostsLoader.swift in Sources */,
 				C46BB0C624182157003D81D9 /* Post.swift in Sources */,
 				C411A24223E45CF800D637BC /* AppDelegate.swift in Sources */,
