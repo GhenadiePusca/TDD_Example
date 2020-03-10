@@ -31,24 +31,8 @@ import TDD_process
     - On retry the image is loaded again.
  */
 
-class PostsLoader {
-    var loadCallCount: Int {
-        completions.count
-    }
-    
-    private var completions = [((Result<[Post], Error>) -> Void)]()
-
-    func load(completion: @escaping (Result<[Post], Error>) -> Void) {
-        completions.append(completion)
-    }
-    
-    func completeLoadingWithSuccess(at idx: Int = 0, with posts: [Post] = []) {
-        completions[idx](.success(posts))
-    }
-
-    func completeLoadingWithError(at idx: Int = 0) {
-        completions[idx](.failure(anyError()))
-    }
+protocol PostsLoader {
+    func load(completion: @escaping (Result<[Post], Error>) -> Void)
 }
 
 class PostCell: UITableViewCell {
@@ -146,8 +130,8 @@ class PostsViewControllerTests: XCTestCase {
     
     // MARK: - Helper methods
 
-    private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoader) {
-        let postsLoader = PostsLoader()
+    private func makeSut(file: StaticString = #file, line: UInt = #line) -> (PostsViewController, PostsLoaderMock) {
+        let postsLoader = PostsLoaderMock()
         let sut = PostsViewController(postsLoader: postsLoader)
         trackForMemoryLeaks(object: sut, file: file, line: line)
         
@@ -186,6 +170,26 @@ class PostsViewControllerTests: XCTestCase {
     func makePost(image: URL = URL(string: "https://any.com")!,
                   description: String) -> Post {
         Post(image: image, description: description)
+    }
+
+    private class PostsLoaderMock: PostsLoader {
+        var loadCallCount: Int {
+            completions.count
+        }
+
+        private var completions = [((Result<[Post], Error>) -> Void)]()
+
+        func load(completion: @escaping (Result<[Post], Error>) -> Void) {
+            completions.append(completion)
+        }
+
+        func completeLoadingWithSuccess(at idx: Int = 0, with posts: [Post] = []) {
+            completions[idx](.success(posts))
+        }
+
+        func completeLoadingWithError(at idx: Int = 0) {
+            completions[idx](.failure(anyError()))
+        }
     }
 }
 
